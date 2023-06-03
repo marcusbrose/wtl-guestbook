@@ -6,6 +6,7 @@ import CoreInputEmail from './CoreInputEmail.vue'
 import CoreFormElement from './CoreFormElement.vue'
 import CoreInputTexarea from './CoreInputTexarea.vue'
 import CoreButton from './CoreButton.vue'
+import useGuestbookStore from '@/stores/guestbook'
 
 const entrySchema = z.object({
   email: z.string()
@@ -24,15 +25,21 @@ const initialEntry = {
   text: '',
 }
 
-const entry = ref(initialEntry)
+const entry = ref({ ...initialEntry })
 const fieldErrors = ref(null)
+
+const guestbook = useGuestbookStore()
 
 const onSubmit = () => {
   fieldErrors.value = null
   try {
     entrySchema.parse(entry.value)
 
-    console.log(entry.value)
+    guestbook.addEntry(entry.value)
+      .then(() => {
+        entry.value = { ...initialEntry }
+      })
+
   } catch (err) {
     if (err instanceof z.ZodError) {
       fieldErrors.value = err.flatten().fieldErrors
@@ -57,7 +64,5 @@ const onSubmit = () => {
     <CoreButton>
       Send message
     </CoreButton>
-
-    <pre>{{ entry }}</pre>
   </form>
 </template>
