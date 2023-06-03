@@ -13,8 +13,10 @@ import GuestbookList from '../components/GuestbookList.vue';
         <GuestbookList />
       </div>
       <div class="flex-1 p-4">
-        <CoreTitle title="What would you like to tell us?" />
-        <GuestbookForm />
+        <aside class="h-screen sticky top-12">
+          <CoreTitle title="What would you like to tell us?" />
+          <GuestbookForm />
+        </aside>
       </div>
     </div>
   </MainLayout>
