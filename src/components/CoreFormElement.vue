@@ -6,6 +6,10 @@ defineProps({
   label: {
     type: String
   },
+  error: {
+    type: String,
+    required: false,
+  }
 })
 </script>
 
@@ -16,6 +20,9 @@ defineProps({
     </label>
     <div class="mt-2.5">
       <slot />
+    </div>
+    <div v-if="error" class="text-red-500 py-1">
+      {{ error }}
     </div>
   </div>
 </template>
