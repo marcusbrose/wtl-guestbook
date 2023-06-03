@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
+import { useStorage } from '@vueuse/core'
 
 export default defineStore('guestbook', {
   state: () => ({
-    entries: [],
+    entries: useStorage('entries', []),
   }),
   getters: {
   },
