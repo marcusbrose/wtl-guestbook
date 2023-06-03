@@ -7,6 +7,6 @@ const guestbook = useGuestbookStore()
 
 <template>
   <div class="flex flex-col divide-y">
-    <GuestbookListItem v-for="entry in guestbook.entries" :key="entry.id" :entry="entry" />
+    <GuestbookListItem v-for="entry in guestbook.entriesSorted" :key="entry.id" :entry="entry" />
   </div>
 </template>

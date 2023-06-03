@@ -7,6 +7,10 @@ export default defineStore('guestbook', {
     entries: useStorage('entries', []),
   }),
   getters: {
+    entriesSorted: (state) => {
+      return state.entries
+        .sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
+    }
   },
   actions: {
     async addEntry(entry) {
