@@ -6,6 +6,7 @@ import CoreInputEmail from './CoreInputEmail.vue'
 import CoreFormElement from './CoreFormElement.vue'
 import CoreInputTexarea from './CoreInputTexarea.vue'
 import CoreButton from './CoreButton.vue'
+import CoreSpinner from './CoreSpinner.vue'
 import useGuestbookStore from '@/stores/guestbook'
 
 const entrySchema = z.object({
@@ -27,17 +28,26 @@ const initialEntry = {
 
 const entry = ref({ ...initialEntry })
 const fieldErrors = ref(null)
+const loading = ref(false)
 
 const guestbook = useGuestbookStore()
 
 const onSubmit = () => {
+  // prevent double sent form
+  if (loading.value) {
+    return
+  }
   fieldErrors.value = null
   try {
     entrySchema.parse(entry.value)
 
+    loading.value = true
     guestbook.addEntry(entry.value)
       .then(() => {
         entry.value = { ...initialEntry }
+      })
+      .finally(() => {
+        loading.value = false
       })
 
   } catch (err) {
@@ -61,8 +71,14 @@ const onSubmit = () => {
       <CoreInputTexarea id="text" v-model="entry.text" placeholder="Please write some words." />
     </CoreFormElement>
 
-    <CoreButton>
-      Send message
+    <CoreButton :disabled="loading">
+      <CoreSpinner v-if="loading" />
+      <span v-if="loading">
+        Sending...
+      </span>
+      <span v-else>
+        Send message
+      </span>
     </CoreButton>
   </form>
 </template>
